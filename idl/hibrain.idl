@@ -1,0 +1,17 @@
+module Vision {
+	struct Time
+	{
+	    unsigned long sec;
+	    unsigned long msec;
+	};
+	struct Matrix {
+		Time tm;
+		unsigned short type;
+		sequence<string> name;
+		sequence<short> div;
+		sequence<octet> pixels;
+	};
+	struct Matarr {
+		sequence<Matrix> arr;
+	};
+};

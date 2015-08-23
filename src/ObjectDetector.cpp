@@ -74,8 +74,8 @@ RTC::ReturnCode_t ObjectDetector::onInitialize()
   // </rtc-template>
 
   inputFrame = cv::Mat::zeros(cv::Size(320,240),16);
-  namedWindow( "Display window", WINDOW_AUTOSIZE );
-  cv::imshow( "Display window", inputFrame);
+  namedWindow( "ObjectDetector", WINDOW_AUTOSIZE );
+  cv::imshow( "ObjectDetector", inputFrame);
   cv::waitKey(25);
   cout<<"Initialize OK"<<endl;
 
@@ -154,7 +154,12 @@ RTC::ReturnCode_t ObjectDetector::onExecute(RTC::UniqueId ec_id)
     radius = cv::saturate_cast<int>((r->width + r->height)*0.25*scale);
     cv::circle( outputFrame, center, radius, cv::Scalar(80,80,255), 3, 8, 0 );
   }
+  cv::imshow("ObjectDetector", outputFrame);
+  cv::waitKey(3);
 
+  outputFrame>>m_output;
+
+  m_outputOut.write();
   return RTC::RTC_OK;
 }
 

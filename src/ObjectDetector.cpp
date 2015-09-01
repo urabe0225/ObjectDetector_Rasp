@@ -25,6 +25,12 @@ static const char* objectdetector_spec[] =
     "max_instance",      "1",
     "language",          "C++",
     "lang_type",         "compile",
+    // Configuration variables
+    "conf.default.object", "0:face",
+    // Widget
+    "conf.__widget__.object", "radio",
+    // Constraints
+    "conf.__constraints__.object", "(1:cat,0:face,3:body)",
     ""
   };
 // </rtc-template>
@@ -69,7 +75,7 @@ RTC::ReturnCode_t ObjectDetector::onInitialize()
   // Set CORBA Service Ports
   
   // </rtc-template>
-
+  bindParameter("object", m_object, "0:face");
   // <rtc-template block="bind_config">
   // </rtc-template>
 
@@ -106,9 +112,12 @@ RTC::ReturnCode_t ObjectDetector::onShutdown(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t ObjectDetector::onActivated(RTC::UniqueId ec_id)
 {
-  cascadeName = "/usr/local/opencv3.0.0/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml";
-//  cascadeName = "/usr/local/opencv3.0.0/share/OpenCV/haarcascades/haarcascade_frontalcatface.xml";
-//  cascadeName = "/usr/local/opencv3.0.0/share/OpenCV/haarcascades/haarcascade_smile.xml";
+  if(m_object == 0)
+    cascadeName = "/usr/local/opencv3.0.0/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml";
+  else if(m_object == 1)
+    cascadeName = "/usr/local/opencv3.0.0/share/OpenCV/haarcascades/haarcascade_frontalcatface.xml";
+  else
+    cascadeName = "/usr/local/opencv3.0.0/share/OpenCV/haarcascades/haarcascade_fullbody.xml";
   if(!cascade.load(cascadeName))
     return RTC::RTC_ERROR;
 
